@@ -19,7 +19,7 @@ function App() {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {pizzas.map((obj) => {
-              return <PizzaBlock {...obj} />
+              return <PizzaBlock key={obj.id} {...obj} />
             })}
           </div>
         </div>
@@ -30,4 +30,3 @@ function App() {
 
 export default App;
 
-// <PizzaBlock title='Pepperoni ' price='555' />
