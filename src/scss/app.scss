@@ -15,6 +15,10 @@ body {
   margin: 50px auto;
   border-radius: 10px;
   max-width: 1400px;
+
+  @media(max-width: 430px){
+   width: calc(100vw - 30px);
+} 
 }
 
 .content {
@@ -71,10 +75,18 @@ body {
 
     .categories{
       margin-top: 30px;
-    }
-
-   
+    } 
 } 
+
+@media(max-width: 760px){
+  .categories{
+    ul{
+      li{
+        padding: 8px 20px;
+      }
+    }
+  }
+}
   }
 }
 
