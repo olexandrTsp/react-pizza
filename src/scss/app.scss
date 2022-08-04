@@ -104,6 +104,11 @@ body {
 }
 
 .cart {
+
+  .content__items{
+    display: block;
+  }
+  
   &__top {
     display: flex;
     justify-content: space-between;
