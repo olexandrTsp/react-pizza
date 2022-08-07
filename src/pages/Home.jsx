@@ -5,7 +5,7 @@ import Categories from '../Components/Categories';
 
 import { useEffect, useState } from 'react';
 
-export default function Home() {
+export default function Home({ searchValue }) {
   const [items, SetItems] = useState([]);
   const [isLoading, SetISLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
@@ -35,6 +35,15 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, [categoryId, sortType]);
 
+  const pizzas = items
+    .filter((obj) => {
+      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) return true;
+
+      return false;
+    })
+    .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const skeletons = [...new Array(9)].map((_, i) => <Skeleton key={i} />);
+
   return (
     <div className="container">
       <div className="content__top">
@@ -42,11 +51,7 @@ export default function Home() {
         <Sort value={sortType} onChangeSort={(obj) => setSortType(obj)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(9)].map((_, i) => <Skeleton key={i} />)
-          : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
-      </div>
+      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
     </div>
   );
 }
