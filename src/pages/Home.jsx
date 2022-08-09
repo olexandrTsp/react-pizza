@@ -3,9 +3,11 @@ import Skeleton from '../Components/pizza-block/Skeleton';
 import Sort from '../Components/Sort';
 import Categories from '../Components/Categories';
 import Pagination from '../Components/Pagination';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { SearchContext } from '../App';
 
-export default function Home({ searchValue }) {
+export default function Home() {
+  const { searchValue } = useContext(SearchContext);
   const [items, SetItems] = useState([]);
   const [isLoading, SetISLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
