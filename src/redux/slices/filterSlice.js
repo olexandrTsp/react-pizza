@@ -1,18 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
+
 
 const initialState = {
   value: 0,
-}
+};
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const filtesSlice = createSlice({
+  name: 'filter',
   initialState,
-  reducers: {
- 
-  },
-})
+  reducers: {},
+});
 
 // Action creators are generated for each case reducer function
-export const { } = counterSlice.actions
+export const {} = filtesSlice.actions;
 
-export default counterSlice.reducer
+export default filtesSlice.reducer;
