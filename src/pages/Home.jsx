@@ -5,20 +5,25 @@ import Categories from '../Components/Categories';
 import Pagination from '../Components/Pagination';
 import { useEffect, useState, useContext } from 'react';
 import { SearchContext } from '../App';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 export default function Home() {
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const sortType = useSelector((state) => state.filter.sort.sortProperty);
+  const dispach = useDispatch();
+
+  const onChangeCategory = (id) => {
+    dispach(setCategoryId(id));
+  };
+
   const { searchValue } = useContext(SearchContext);
   const [items, SetItems] = useState([]);
   const [isLoading, SetISLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
   const [curentPage, setCurentPage] = useState(1);
-  const [sortType, setSortType] = useState({
-    name: 'популярности',
-    sortProperty: 'rating',
-  });
 
-  const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-  const sortBy = sortType.sortProperty.replace('-', '');
+  const order = sortType.includes('-') ? 'asc' : 'desc';
+  const sortBy = sortType.replace('-', '');
   const category = categoryId > 0 ? `category=${categoryId}` : '';
   const search = searchValue ? `&search=${searchValue}` : '';
 
@@ -45,8 +50,8 @@ export default function Home() {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onChangeCategory={(i) => setCategoryId(i)} />
-        <Sort value={sortType} onChangeSort={(obj) => setSortType(obj)} />
+        <Categories value={categoryId} onChangeCategory={onChangeCategory} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
@@ -55,8 +60,3 @@ export default function Home() {
   );
 }
 
-// .filter((obj) => {
-//   if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) return true;      ======>       ofline filter
-
-//   return false;
-// })
