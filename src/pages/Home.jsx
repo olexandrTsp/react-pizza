@@ -3,6 +3,7 @@ import Skeleton from '../Components/pizza-block/Skeleton';
 import Sort from '../Components/Sort';
 import Categories from '../Components/Categories';
 import Pagination from '../Components/Pagination';
+import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,14 +31,12 @@ export default function Home() {
   useEffect(() => {
     SetISLoading(true);
 
-    fetch(
-      `https://62e694a269bd03090f72e797.mockapi.io/items?page=${curentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-    )
+    axios
+      .get(
+        `https://62e694a269bd03090f72e797.mockapi.io/items?page=${curentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
+      )
       .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        SetItems(json);
+        SetItems(res.data);
         SetISLoading(false);
       });
 
@@ -59,4 +58,3 @@ export default function Home() {
     </div>
   );
 }
-
