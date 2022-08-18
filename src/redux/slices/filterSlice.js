@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-const filtesSlice = createSlice({
+const filterSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
@@ -30,6 +30,6 @@ const filtesSlice = createSlice({
   },
 });
 
-export const { setCategoryId, setSort, setCurentPage, setFilters } = filtesSlice.actions;
+export const { setCategoryId, setSort, setCurentPage, setFilters } = filterSlice.actions;
 
-export default filtesSlice.reducer;
+export default filterSlice.reducer;

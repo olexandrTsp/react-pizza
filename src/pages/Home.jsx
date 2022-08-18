@@ -16,7 +16,7 @@ export default function Home() {
   const isMounted = useRef(false);
 
   const navigate = useNavigate();
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const curentPage = useSelector((state) => state.filter.curentPage);
@@ -31,11 +31,11 @@ export default function Home() {
   const search = searchValue ? `&search=${searchValue}` : '';
 
   const onChangePage = (num) => {
-    dispach(setCurentPage(num));
+    dispatch(setCurentPage(num));
   };
 
   const onChangeCategory = (id) => {
-    dispach(setCategoryId(id));
+    dispatch(setCategoryId(id));
   };
 
   const fetchPizzas = () => {
@@ -50,31 +50,8 @@ export default function Home() {
         SetISLoading(false);
       });
   };
-
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-      dispach(
-        setFilters({
-          ...params,
-          sort,
-        }),
-      );
-
-      isSearch.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isSearch.current) {
-      fetchPizzas();
-    }
-    isSearch.current = false;
-
-    window.scrollTo(0, 0);
-  }, [categoryId, sortType, searchValue, curentPage]);
-
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  // If there was a first rendering and parameters changed
   useEffect(() => {
     if (isMounted.current) {
       const queryStryng = qs.stringify({
@@ -86,6 +63,38 @@ export default function Home() {
     }
     isMounted.current = true;
   }, [categoryId, sortType, curentPage]);
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  //If it is the first rendering, then check the URL and save it in Redux
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        }),
+      );
+
+      isSearch.current = true;
+    }
+  }, []);
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  // If there was a first rendering, then query
+  useEffect(() => {
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+    isSearch.current = false;
+
+    window.scrollTo(0, 0);
+  }, [categoryId, sortType, searchValue, curentPage]);
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(9)].map((_, i) => <Skeleton key={i} />);
