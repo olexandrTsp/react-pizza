@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import Search from './Search';
 import { useSelector } from 'react-redux';
 
+
 export default function Header() {
-  const { items, totalPrice } = useSelector((state) => state.cart);
+  const { items, totalPrice } = useSelector(state => state.cart);
 
   return (
     <div className="header">
