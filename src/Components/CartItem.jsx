@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
-export default function CartItem({ id, title, type, price, imageUrl, count }) {
+export default function CartItem({ id, title, type, price, size, imageUrl, count }) {
   const dispatch = useDispatch();
 	
 
@@ -21,7 +21,7 @@ export default function CartItem({ id, title, type, price, imageUrl, count }) {
       </div>
       <div className="cart__item-info">
         <h3>{title}</h3>
-        <p>{type}</p>
+        <p>{type}, {size} cм.</p>
       </div>
       <div className="cart__item-count">
         <div

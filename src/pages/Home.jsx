@@ -38,18 +38,30 @@ export default function Home() {
     dispatch(setCategoryId(id));
   };
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     SetISLoading(true);
 
-    axios
-      .get(
+    // axios
+    //   .get(
+    //     `https://62e694a269bd03090f72e797.mockapi.io/items?page=${curentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
+    //   )
+    //   .then((res) => {
+    //     SetItems(res.data);
+    //     SetISLoading(false);
+    //   });
+
+    try {
+      const res = await axios.get(
         `https://62e694a269bd03090f72e797.mockapi.io/items?page=${curentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-      )
-      .then((res) => {
-        SetItems(res.data);
-        SetISLoading(false);
-      });
+      );
+      SetItems(res.data);
+      SetISLoading(false);
+    } catch (e) {
+      SetISLoading(false)
+      console.log('ERROR -', e)
+    }
   };
+
   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   // If there was a first rendering and parameters changed
   useEffect(() => {
@@ -94,7 +106,6 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, curentPage]);
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(9)].map((_, i) => <Skeleton key={i} />);
