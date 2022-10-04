@@ -3,16 +3,17 @@ import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
 export default function CartItem({ id, title, type, price, size, imageUrl, count }) {
   const dispatch = useDispatch();
-	
 
   const onClickPlus = () => dispatch(addItem({ id }));
-  const onClickMinus = () => dispatch(minusItem(id));
+  const onClickMinus = () => dispatch(minusItem({ id, price }));
 
   const onClickRemove = () => {
-	if(window.confirm('Удалить товар ?')){
-		dispatch(removeItem(id))
-	}
+    if (window.confirm('Удалить товар ?')) {
+      dispatch(removeItem(id));
+    }
   };
+
+  if (count === 0) dispatch(removeItem(id));
 
   return (
     <div className="cart__item">
@@ -21,7 +22,9 @@ export default function CartItem({ id, title, type, price, size, imageUrl, count
       </div>
       <div className="cart__item-info">
         <h3>{title}</h3>
-        <p>{type}, {size} cм.</p>
+        <p>
+          {type}, {size} cм.
+        </p>
       </div>
       <div className="cart__item-count">
         <div

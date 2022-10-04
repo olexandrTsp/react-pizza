@@ -3,10 +3,9 @@ import Skeleton from '../Components/pizza-block/Skeleton';
 import Sort, { sortList } from '../Components/Sort';
 import Categories from '../Components/Categories';
 import Pagination from '../Components/Pagination';
-import axios from 'axios';
+
 import qs from 'qs';
-import { useEffect, useState, useContext, useRef } from 'react';
-import { SearchContext } from '../App';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategoryId, setCurentPage, setFilters } from '../redux/slices/filterSlice';
 import { useNavigate } from 'react-router-dom';
@@ -18,13 +17,13 @@ export default function Home() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const curentPage = useSelector((state) => state.filter.curentPage);
+  const searchValue = useSelector((state) => state.filter.searchValue);
 
   const { items, status } = useSelector((state) => state.pizza);
-
-  const { searchValue } = useContext(SearchContext);
 
   const order = sortType.includes('-') ? 'asc' : 'desc';
   const sortBy = sortType.replace('-', '');
