@@ -8,7 +8,7 @@ import qs from 'qs';
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategoryId, setCurentPage, setFilters } from '../redux/slices/filterSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
 export default function Home() {
@@ -96,7 +96,11 @@ export default function Home() {
   }, [categoryId, sortType, searchValue, curentPage]);
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj) => (
+    <Link key={obj.id} to={`/pizza/${obj.id}`}>
+      <PizzaBlock {...obj} />
+    </Link>
+  ));
   const skeletons = [...new Array(9)].map((_, i) => <Skeleton key={i} />);
 
   return (
