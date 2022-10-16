@@ -1,7 +1,27 @@
+import { type } from '@testing-library/user-event/dist/type';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
-export default function CartItem({ id, title, type, price, size, imageUrl, count }) {
+type CartItemProps = {
+  id: string,
+  title: string,
+  type: string,
+  price: number,
+  size: number,
+  imageUrl: string,
+  count: number
+};
+
+export const CartItem: React.FC<CartItemProps> = ({
+  id,
+  title,
+  type,
+  price,
+  size,
+  imageUrl,
+  count,
+}) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => dispatch(addItem({ id }));
@@ -85,4 +105,4 @@ export default function CartItem({ id, title, type, price, size, imageUrl, count
       </div>
     </div>
   );
-}
+};
