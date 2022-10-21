@@ -1,36 +1,43 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store';
+import { SortPropertyEnum } from '../redux/slices/filterSlice';
 
-type sortItem = {
+type SortItem = {
   name: string;
-  sortProperty: string;
+  sortProperty: SortPropertyEnum;
 };
 
-export const sortList: sortItem[] = [
-  { name: 'популярности (DESC)', sortProperty: 'rating' },
-  { name: 'популярности (ASC)', sortProperty: '-rating' },
-  { name: 'цене (DESC)', sortProperty: 'price' },
-  { name: 'цене (ASC)', sortProperty: '-price' },
-  { name: 'алфавиту(DESC)', sortProperty: 'title' },
-  { name: 'алфавиту(ASC)', sortProperty: '- title' },
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+
+export const sortList: SortItem[] = [
+  { name: 'популярности (DESC)', sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: 'популярности (ASC)', sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: 'цене (DESC)', sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: 'цене (ASC)', sortProperty: SortPropertyEnum.PRICE_ASC },
+  { name: 'алфавиту(DESC)', sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: 'алфавиту(ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-export default function Sort() {
+export default function SortPopup() {
   const [open, setOpen] = useState(false);
   const dispach = useDispatch();
-  const sort = useSelector((state:any) => state.filter.sort);
+  const sort = useSelector((state: RootState) => state.filter.sort);
 
   const sortRef = useRef<HTMLDivElement>(null);
 
-  function onClickSelectItem(obj: sortItem) {
+  function onClickSelectItem(obj: SortItem) {
     dispach(setSort(obj));
     setOpen(false);
   }
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setOpen(false);
       }
     };

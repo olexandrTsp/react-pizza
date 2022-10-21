@@ -1,6 +1,6 @@
 import styles from './Search.module.scss';
 import { setSearchValue } from '../../redux/slices/filterSlice';
-import { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 
@@ -22,7 +22,7 @@ export const Search: React.FC = () => {
     inputRef.current?.focus();
   };
 
-  const onChangeInput = (event: any) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };

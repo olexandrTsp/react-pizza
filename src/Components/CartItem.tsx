@@ -1,19 +1,19 @@
 import { type } from '@testing-library/user-event/dist/type';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
+import { addItem, CartItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
 type CartItemProps = {
-  id: string,
-  title: string,
-  type: string,
-  price: number,
-  size: number,
-  imageUrl: string,
-  count: number
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  size: number;
+  imageUrl: string;
+  count: number;
 };
 
-export const CartItem: React.FC<CartItemProps> = ({
+export const CartItemBlock: React.FC<CartItemProps> = ({
   id,
   title,
   type,
@@ -24,8 +24,8 @@ export const CartItem: React.FC<CartItemProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const onClickPlus = () => dispatch(addItem({ id }));
-  const onClickMinus = () => dispatch(minusItem({ id, price }));
+  const onClickPlus = () => dispatch(addItem({ id } as CartItem));
+  const onClickMinus = () => dispatch(minusItem({ id, price } as CartItem));
 
   const onClickRemove = () => {
     if (window.confirm('Удалить товар ?')) {
