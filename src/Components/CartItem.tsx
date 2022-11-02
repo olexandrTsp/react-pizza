@@ -1,7 +1,7 @@
-import { type } from '@testing-library/user-event/dist/type';
+import {type} from '@testing-library/user-event/dist/type';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addItem, CartItem, minusItem, removeItem } from '../redux/slices/cartSlice';
+import {useDispatch} from 'react-redux';
+import {addItem, CartItem, minusItem, removeItem} from '../redux/slices/cartSlice';
 
 type CartItemProps = {
   id: string;
@@ -11,6 +11,11 @@ type CartItemProps = {
   size: number;
   imageUrl: string;
   count: number;
+};
+
+export type Cartpayload = {
+  id: string;
+  totalPrice: number;
 };
 
 export const CartItemBlock: React.FC<CartItemProps> = ({
@@ -24,16 +29,16 @@ export const CartItemBlock: React.FC<CartItemProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const onClickPlus = () => dispatch(addItem({ id } as CartItem));
-  const onClickMinus = () => dispatch(minusItem({ id, price } as CartItem));
-
+  const onClickPlus = () => dispatch(addItem({id} as CartItem));
+  const onClickMinus = () => dispatch(minusItem({id, price} as CartItem));
+  let totalPrice = count * price;
   const onClickRemove = () => {
     if (window.confirm('Удалить товар ?')) {
-      dispatch(removeItem(id));
+      dispatch(removeItem({id, totalPrice} as Cartpayload));
     }
   };
 
-  if (count === 0) dispatch(removeItem(id));
+  if (count === 0) dispatch(removeItem({id, totalPrice} as Cartpayload));
 
   return (
     <div className="cart__item">

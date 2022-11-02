@@ -1,6 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Sort } from './filterSlice';
 
 type FetchPizzasArgs = Record<string, string>;
 
@@ -36,8 +35,8 @@ export type SearchPizzaParams = {
 export const fetchPizzas = createAsyncThunk<Pizza[], SearchPizzaParams>(
   'pizza/fetchPizzasStatus',
   async (params) => {
-    const { order, sortBy, category, search, curentPage } = params;
-    const { data } = await axios.get<Pizza[]>(
+    const {order, sortBy, category, search, curentPage} = params;
+    const {data} = await axios.get<Pizza[]>(
       `https://62e694a269bd03090f72e797.mockapi.io/items?page=${curentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
     );
     return data;
@@ -74,6 +73,6 @@ const pizzaSlice = createSlice({
   },
 });
 
-export const { setItems } = pizzaSlice.actions;
+export const {setItems} = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;

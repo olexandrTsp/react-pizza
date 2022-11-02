@@ -1,7 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Cartpayload} from '../../Components/CartItem';
+import {calcTotalPrice} from '../../utils/calcTotalPrice';
+import {getCartFromLS} from '../../utils/getCartfromLS';
 
-
- export type CartItem = {
+export type CartItem = {
   id: string;
   title: string;
   type: string;
@@ -16,16 +18,18 @@ interface cartSliceState {
   items: CartItem[];
 }
 
+const {totalPrice, items} = getCartFromLS();
+
 const initialState: cartSliceState = {
-  totalPrice: 0,
-  items: [],
+  totalPrice,
+  items,
 };
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addItem(state, action:PayloadAction<CartItem>) {
+    addItem(state, action: PayloadAction<CartItem>) {
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       if (findItem) findItem.count++;
@@ -35,15 +39,14 @@ const cartSlice = createSlice({
           count: 1,
         });
       }
-      state.totalPrice = state.items.reduce((sum, obj) => {
-        return obj.price * obj.count + sum;
-      }, 0);
+      state.totalPrice = calcTotalPrice(state.items);
     },
-    removeItem(state, action : PayloadAction<string>) {
-      state.items = state.items.filter((obj) => obj.id !== action.payload);
+    removeItem(state, action: PayloadAction<Cartpayload>) {
+      state.items = state.items.filter((obj) => obj.id !== action.payload.id);
+      state.totalPrice -= action.payload.totalPrice;
     },
 
-    minusItem(state, action:PayloadAction<CartItem>) {
+    minusItem(state, action: PayloadAction<CartItem>) {
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       if (findItem) {
@@ -59,6 +62,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, clearItem, minusItem } = cartSlice.actions;
+export const {addItem, removeItem, clearItem, minusItem} = cartSlice.actions;
 
 export default cartSlice.reducer;

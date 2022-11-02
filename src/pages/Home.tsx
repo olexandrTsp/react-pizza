@@ -1,17 +1,17 @@
-import { PizzaBlock } from '../Components/pizza-block';
+import {PizzaBlock} from '../Components/pizza-block';
 import Skeleton from '../Components/pizza-block/Skeleton';
-import Sort, { sortList } from '../Components/Sort';
-import { Categories } from '../Components/Categories';
-import { Pagination } from '../Components/Pagination';
+import Sort, {sortList} from '../Components/Sort';
+import {Categories} from '../Components/Categories';
+import {Pagination} from '../Components/Pagination';
 
 import qs from 'qs';
-import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { setCategoryId, setCurentPage, setFilters } from '../redux/slices/filterSlice';
-import { Link, useNavigate } from 'react-router-dom';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
-import { useAppDispatch } from '../redux/store';
-import { SearchPizzaParams } from '../redux/slices/pizzaSlice';
+import {useEffect, useRef} from 'react';
+import {useSelector} from 'react-redux';
+import {setCategoryId, setCurentPage, setFilters} from '../redux/slices/filterSlice';
+import {Link, useNavigate} from 'react-router-dom';
+import {fetchPizzas} from '../redux/slices/pizzaSlice';
+import {useAppDispatch} from '../redux/store';
+import {SearchPizzaParams} from '../redux/slices/pizzaSlice';
 export const Home: React.FC = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
@@ -24,7 +24,7 @@ export const Home: React.FC = () => {
   const curentPage = useSelector((state: any) => state.filter.curentPage);
   const searchValue = useSelector((state: any) => state.filter.searchValue);
 
-  const { items, status } = useSelector((state: any) => state.pizza);
+  const {items, status} = useSelector((state: any) => state.pizza);
 
   const order = sortType.includes('-') ? 'asc' : 'desc';
   const sortBy = sortType.replace('-', '');
@@ -55,39 +55,39 @@ export const Home: React.FC = () => {
 
   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   // If there was a first rendering and parameters changed
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     const queryStryng = qs.stringify({
-  //       sortProperty: sortType,
-  //       categoryId,
-  //       curentPage,
-  //     });
-  //     navigate(`?${queryStryng}`);
-  //   }
-  //   isMounted.current = true;
-  // }, [categoryId, sortType, curentPage]);
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryStryng = qs.stringify({
+        sortProperty: sortType,
+        categoryId,
+        curentPage,
+      });
+      navigate(`?${queryStryng}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sortType, curentPage]);
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  //If it is the first rendering, then check the URL and save it in Redux
-  // useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
-  //     const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
+  // If it is the first rendering, then check the URL and save it in Redux
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
 
-  //     dispatch(
-  //       setFilters({
-  //         searchValue: params.search,
-  //         categoryId: Number(params.category),
-  //         curentPage: Number(params.curentPage),
-  //         sort: sort || sortList[0],
-  //       }),
-  //     );
+      dispatch(
+        setFilters({
+          searchValue: params.search,
+          categoryId: Number(params.category),
+          curentPage: Number(params.curentPage),
+          sort: sort || sortList[0],
+        }),
+      );
 
-  //     isSearch.current = true;
-  //   }
-  // }, []);
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      isSearch.current = true;
+    }
+  }, []);
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   // If there was a first rendering, then query
